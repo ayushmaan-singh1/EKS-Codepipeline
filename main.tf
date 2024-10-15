@@ -1,6 +1,6 @@
 # Configuring the AWS Provider
 provider "aws" {
-  version = "~> 5.71.0"
+  version = "~> 5.70.0"
   region  = "ap-south-1"
 }
 
@@ -126,7 +126,6 @@ data "aws_eks_addon_version" "vpc_cni" {
   most_recent        = true
 }
 
-
 data "aws_eks_addon_version" "kube_proxy" {
   addon_name         = "kube-proxy"
   kubernetes_version = aws_eks_cluster.Ayushmaan-EKS.version
@@ -141,13 +140,14 @@ resource "aws_eks_addon" "vpc_cni" {
   addon_version = data.aws_eks_addon_version.vpc_cni.version
 }
 
+
+
 # EKS Addon for Kube Proxy
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name  = aws_eks_cluster.Ayushmaan-EKS.name
   addon_name    = "kube-proxy"
   addon_version = data.aws_eks_addon_version.kube_proxy.version
 }
-
 
 # EKS Node Group 
 resource "aws_eks_node_group" "Ayushmaan-NG" {
@@ -180,9 +180,9 @@ resource "aws_instance" "operating" {
   instance_type       = "t2.medium"
   key_name            = "server" 
   subnet_id           = aws_subnet.Public1.id
-  vpc_security_group_ids     = [aws_security_group.my-SG.id]
+  vpc_security_group_ids = [aws_security_group.my-SG.id]
 
-  iam_instance_profile = "arn:aws:iam::851725241695:instance-profile/EKSFull"  
+  iam_instance_profile = "EC2-EKS"  
 
   # User Data
   user_data = <<-EOF
