@@ -126,11 +126,6 @@ data "aws_eks_addon_version" "vpc_cni" {
   most_recent        = true
 }
 
-data "aws_eks_addon_version" "coredns" {
-  addon_name         = "coredns"
-  kubernetes_version = aws_eks_cluster.Ayushmaan-EKS.version
-  most_recent        = true
-}
 
 data "aws_eks_addon_version" "kube_proxy" {
   addon_name         = "kube-proxy"
@@ -138,24 +133,12 @@ data "aws_eks_addon_version" "kube_proxy" {
   most_recent        = true
 }
 
-data "aws_eks_addon_version" "pod_identity" {
-  addon_name         = "eks-pod-identity"
-  kubernetes_version = aws_eks_cluster.Ayushmaan-EKS.version
-  most_recent        = true
-}
 
 # EKS Addon for VPC CNI
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.Ayushmaan-EKS.name
   addon_name    = "vpc-cni"
   addon_version = data.aws_eks_addon_version.vpc_cni.version
-}
-
-# EKS Addon for CoreDNS
-resource "aws_eks_addon" "coredns" {
-  cluster_name  = aws_eks_cluster.Ayushmaan-EKS.name
-  addon_name    = "coredns"
-  addon_version = data.aws_eks_addon_version.coredns.version
 }
 
 # EKS Addon for Kube Proxy
@@ -165,12 +148,6 @@ resource "aws_eks_addon" "kube_proxy" {
   addon_version = data.aws_eks_addon_version.kube_proxy.version
 }
 
-# EKS Addon for EKS Pod Identity
-resource "aws_eks_addon" "pod_identity" {
-  cluster_name  = aws_eks_cluster.Ayushmaan-EKS.name
-  addon_name    = "eks-pod-identity"
-  addon_version = data.aws_eks_addon_version.pod_identity.version
-}
 
 # EKS Node Group 
 resource "aws_eks_node_group" "Ayushmaan-NG" {
