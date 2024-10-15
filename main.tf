@@ -1,6 +1,6 @@
 # Configuring the AWS Provider
 provider "aws" {
-  version = "~> 5.0"
+  version = "~> 5.71.0"
   region  = "ap-south-1"
 }
 
@@ -180,7 +180,7 @@ resource "aws_instance" "operating" {
   instance_type       = "t2.medium"
   key_name            = "server" 
   subnet_id           = aws_subnet.Public1.id
-  security_groups     = [aws_security_group.my-SG.name]
+  vpc_security_group_id     = [aws_security_group.my-SG.id]
 
   iam_instance_profile = "arn:aws:iam::851725241695:instance-profile/EKSFull"  
 
