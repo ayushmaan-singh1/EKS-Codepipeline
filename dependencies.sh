@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 echo "Installing Dependencies"
 sudo apt -y update
 sudo apt -y install docker.io  unzip
