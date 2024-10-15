@@ -1,18 +1,32 @@
+---
 version: 0.2
 
 phases:
   install:
     commands:
-      - apt-get update
-      - apt-get install -y unzip
-      - curl -o terraform.zip https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
-      - unzip terraform.zip
-      - mv terraform /usr/local/bin/
-      - terraform --version
+      - echo "Installing dependencies"
+      - sudo chmod +x dependencies.sh  # Fixed the '+' to 'x' for executable
+      - sudo ./dependencies.sh
   pre_build:
     commands:
+      - echo "Configuring AWS CLI"
+      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      - aws configure set default.region ap-south-1
+      - aws eks update-kubeconfig --name Ayushmaan-EKS --region ap-south-1
+      - kubectl label node $(kubectl get nodes --no-headers | \
+        awk '{print $1}')
+      - echo "Logging in to Docker Hub"
+      - echo $DOCKERHUB_PASSWORD | \
+        sudo docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - echo "Initializing Terraform..."
+      - cd terraform
       - terraform init
+
   build:
     commands:
-      - terraform plan
+      - echo "Applying Terraform configuration..."
       - terraform apply -auto-approve
+      - echo "Applying Kubernetes manifests..."
+      - kubectl apply -f hello.yaml
+      - kubectl apply -f service.yaml
