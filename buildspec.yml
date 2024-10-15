@@ -15,7 +15,7 @@ phases:
       - aws configure set default.region ap-south-1
       - aws eks update-kubeconfig --name Ayushmaan-EKS --region ap-south-1
       - kubectl label node $(kubectl get nodes --no-headers | \
-        awk '{print $1}')
+        awk '{print $1}') worker=worker1
       - echo "Logging in to Docker Hub"
       - echo $DOCKERHUB_PASSWORD | \
         sudo docker login -u $DOCKERHUB_USERNAME --password-stdin
