@@ -6,7 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies"
       - sudo chmod +x dependencies.sh  # Fixed the '+' to 'x' for executable
-      - sudo ./dependencies.sh
+      - ./dependencies.sh
   pre_build:
     commands:
       - echo "Configuring AWS CLI"
