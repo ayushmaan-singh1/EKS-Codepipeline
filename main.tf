@@ -202,7 +202,12 @@ resource "aws_instance" "operating" {
 	      # KUBECTL installation
 	      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 	      sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-	      EOF
+              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+              aws configure set default.region ap-south-1
+              echo "$DOCKERHUB_PASSWORD" | sudo dockerhub login -u $DOCKERHUB_USERNAME --passsword-stdin
+              aws eks update-kubeconfig --name Ayushmaan-EKS --region ap-south-1
+              EOF
   
   tags = {
     Name = "operating"
