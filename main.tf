@@ -19,7 +19,7 @@ resource "aws_subnet" "Public1" {
   map_public_ip_on_launch = true
   availability_zone       = "ap-south-1a"
   tags = {
-    Name = "Public_subnet2"
+    Name = "Public_subnet1"
   }
 }
 
